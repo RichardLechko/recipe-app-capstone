@@ -1,0 +1,401 @@
+/* ===============================
+   Reset & Variables
+================================ */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --font-base: 16px;
+  --font-large: 18px;
+  --font-title: 22px;
+
+  --border-color: #cfcfcf;
+  --panel-bg: #ffffff;
+  --divider-color: #d5d5d5;
+}
+
+/* ===============================
+   Base Layout
+================================ */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.6;
+  color: #111;
+}
+
+/* ===============================
+   Background Image
+================================ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background-image: url("images/bg.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+
+  filter: blur(2px);
+  transform: scale(1.05);
+}
+
+/* ===============================
+   Main Container (Glass UI)
+================================ */
+main {
+  max-width: 1100px;
+  margin: 4rem auto;
+  padding: 2.5rem;
+
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+  text-align: center;
+}
+
+/* ===============================
+   Headings (Mockup Style)
+================================ */
+h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 2.5rem;
+}
+
+h2,
+h3 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 0.5rem;
+  text-align: left;
+}
+
+/* Divider line under headings */
+h2::after,
+h3::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 0.5rem;
+  background: linear-gradient(
+    to right,
+    var(--divider-color),
+    transparent
+  );
+}
+
+h2 {
+  font-size: var(--font-title);
+}
+
+h3 {
+  font-size: var(--font-base);
+}
+
+/* ===============================
+   Filters
+================================ */
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 0.75rem 2rem;
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+.filter-grid label {
+  font-weight: 600;
+}
+
+.filter-grid select {
+  justify-self: center;   /* 👈 THIS is the key */
+  width: 180px;
+}
+
+
+/* ===============================
+   Buttons
+================================ */
+button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+/* ===============================
+   Normalize Form Control Fonts
+================================ */
+select,
+option,
+input,
+textarea,
+button {
+  font-family: inherit;
+  font-size: var(--font-base);
+  line-height: 1.4;
+}
+
+#btnSearch {
+  display: block;
+  margin: 1.5rem auto 2.5rem;
+}
+
+#btnReset {
+  display: block;
+  margin: 3rem auto 0;
+}
+
+/* ===============================
+   Matching Recipes Selector
+================================ */
+.output-section {
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  text-align: left;
+}
+
+#recipeSelect {
+  width: 100%;
+  height: 110px;
+
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+/* ===============================
+   Recipe Card
+================================ */
+
+.recipe-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+  padding: 1.25rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Header box */
+.recipe-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.recipe-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 100%;
+}
+
+/* Body layout */
+.recipe-body {
+  display: grid;
+  grid-template-columns: 325px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+
+/* ===============================
+   Recipe Image
+================================ */
+#recipeImage {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+
+  object-fit: cover;
+  background: #f0f0f0;
+  border-radius: 12px;
+}
+
+/* ===============================
+   Recipe Details
+================================ */
+.recipe-details {
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+}
+
+/* ===============================
+   Ingredients Box
+================================ */
+#ingredientList {
+  list-style: disc;
+  list-style-position: inside;
+  padding: 0.75rem 1.25rem;
+  margin: 0;
+
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  font-size: var(--font-base);
+}
+
+#ingredientList li {
+  margin-bottom: 0.25rem;
+}
+
+/* ===============================
+   Instructions Box
+================================ */
+#instructions {
+  width: 100%;
+  height: 220px;
+  padding: 0.75rem 1rem;
+
+  resize: none;
+  font-family: inherit;
+  font-size: var(--font-base);
+  line-height: 1.6;
+
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+/* ===============================
+   Mobile Layout
+================================ */
+@media (max-width: 768px) {
+  main {
+    margin: 2rem 1rem;
+    padding: 1.75rem;
+    border-radius: 16px;
+  }
+
+  .filter-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .recipe-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .recipe-details {
+    text-align: left;
+  }
+
+  #recipeImage {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ===============================
+   Labels Layout
+================================ */
+.image-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.image-label img {
+  height: 64px;        /* 👈 THIS controls size */
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+
+.image-label span {
+  font-weight: 600;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+.app-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-banner {
+  max-width: 100%;
+  height: auto;
+}
+
+.section-banner {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0 1rem;
+}
+
+.section-banner img {
+  width: 520px;        /* 👈 controls size */
+  max-width: 90%;
+  height: auto;
+  display: block;
+}
+
+.section-banner {
+  display: flex;
+  justify-content: center;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.section-banner img {
+  width: 360px;          /* base size */
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Smaller variant for inner sections */
+.section-banner.small img {
+  width: 280px;
+}
+.site-footer {
+  margin-top: 4rem;
+  padding: 1.5rem 1rem;
+
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+
+}
+
+.site-footer p {
+  margin: 0;
+}
