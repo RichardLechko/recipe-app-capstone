@@ -16,6 +16,8 @@
 	<main>
     <h1 class="visually-hidden">Recipe Generator</h1>
 	<header class="app-header"><img src="images/banner.png" alt="Recipe Generator" class="app-banner"></header>
+	
+	<div class="intro-text">Input Your Ingredients:</div>
 
     <!-- Filters -->
     <div class="filter-grid">
@@ -28,7 +30,7 @@
         <select id="vegetable"></select>
     </div>
 
-    <button id="btnSearch">Find Recipe</button>
+    <button id="btnSearch">Generate Recipe</button>
 
     <!-- Results -->
     <div class="output-section">
@@ -46,11 +48,7 @@
   </div>
 
   <div class="recipe-body">
-    <img
-      id="recipeImage"
-      src="images/placeholder.jpg"
-      alt="Recipe image"
-    >
+  	<div class="recipe-image"><img id="recipeImage" src="images/placeholder.jpg" alt="Recipe image"></div>
 
     <div class="recipe-details">
       <div class="section-banner small">
@@ -69,15 +67,10 @@
 
 
     <!-- Reset -->
-    <button id="btnReset" type="button">Reset</button>
+    <button id="btnReset" type="button">Get Another Recipe</button>
+	<footer class="site-footer"><p>Created by Z. Kowalczuk, R. Lechko &amp; A. Mercer-Bey for DePaul course IT 395 — Winter 2026</p></footer>
 	</main>
 	
-	<footer class="site-footer">
-  <p>
-    Created by A. Mercer-Bey, Z. Kowalczuk &amp; R. Lechko for DePaul course IT 395 — Winter 2026
-  </p>
-	</footer>
 
-	
 </body>
 </html>
