@@ -103,6 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Force selection for mobile browsers
     recipeSelect.selectedIndex = 0;
+
+    // Trigger change event so the first recipe's details display automatically
+    recipeSelect.dispatchEvent(new Event("change"));
   }
 
 
