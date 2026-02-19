@@ -354,7 +354,7 @@ button {
     gap: 10px;
   }
 
-  .recipe-card {
+  .recipe-body {
     grid-template-columns: 1fr;
     text-align: center;
   }
