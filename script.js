@@ -1,172 +1,156 @@
 // Recipe Generator Script
 // Anthony Mercer-Bey
 
-document.addEventListener("DOMContentLoaded", function () {
+let matchedRecipes = [];
 
-  const proteinSelect = document.getElementById("protein");
-  const starchSelect = document.getElementById("starch");
-  const vegetableSelect = document.getElementById("vegetable");
-  const recipeSelect = document.getElementById("recipeSelect");
+/* ===============================
+   Populate Dropdowns
+================================ */
+function populateDropdowns() {
+    const recipes = JSON.parse(data);
 
-  const recipeName = document.getElementById("recipeName");
-  const recipeImage = document.getElementById("recipeImage");
-  const ingredientList = document.getElementById("ingredientList");
-  const instructions = document.getElementById("instructions");
+    const proteinSelect = document.getElementById("protein");
+    const starchSelect = document.getElementById("starch");
+    const vegetableSelect = document.getElementById("vegetable");
 
-  const btnSearch = document.getElementById("btnSearch");
-  const btnReset = document.getElementById("btnReset");
-
-
-  /* ===============================
-     Populate Filter Dropdowns
-  ============================== */
-
-  function populateFilters() {
     const proteins = new Set();
     const starches = new Set();
     const vegetables = new Set();
 
-    recipes.forEach(recipe => {
-      recipe.protein.forEach(p => proteins.add(p));
-      recipe.starch.forEach(s => starches.add(s));
-      recipe.vegetables.forEach(v => vegetables.add(v));
+    recipes.forEach(r => {
+        const ing = r.ingredients || {};
+        (ing.protein || []).forEach(p => proteins.add(p));
+        (ing.starch || []).forEach(s => starches.add(s));
+        (ing.vegetables || []).forEach(v => vegetables.add(v));
     });
 
     populateSelect(proteinSelect, proteins);
     populateSelect(starchSelect, starches);
     populateSelect(vegetableSelect, vegetables);
-  }
+}
 
-  function populateSelect(selectElement, values) {
-    selectElement.innerHTML =
-      '<option value="" disabled selected>Select an option</option>';
+function populateSelect(select, values) {
+    select.innerHTML = "";
 
-    values.forEach(value => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = value;
-      selectElement.appendChild(option);
+    const any = document.createElement("option");
+    any.value = "";
+    any.textContent = "-- Any --";
+    select.appendChild(any);
+
+    Array.from(values).sort().forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v.toLowerCase();
+        opt.textContent = v;
+        select.appendChild(opt);
     });
-  }
+}
 
+/* ===============================
+   Search Recipes
+================================ */
+function getRecipeData() {
+    const recipes = JSON.parse(data);
 
-  /* ===============================
-     Generate Matching Recipes
-  ============================== */
+    const pVal = document.getElementById("protein").value;
+    const sVal = document.getElementById("starch").value;
+    const vVal = document.getElementById("vegetable").value;
 
-  btnSearch.addEventListener("click", function () {
-
-    const selectedProtein = proteinSelect.value;
-    const selectedStarch = starchSelect.value;
-    const selectedVegetable = vegetableSelect.value;
-
-    const matches = recipes.filter(recipe =>
-      recipe.protein.includes(selectedProtein) &&
-      recipe.starch.includes(selectedStarch) &&
-      recipe.vegetables.includes(selectedVegetable)
-    );
-
-    populateMatchingRecipes(matches);
-  });
-
-
-  /* ===============================
-     MOBILE-SAFE DROPDOWN FIX
-  ============================== */
-
-  function populateMatchingRecipes(matches) {
+    const recipeSelect = document.getElementById("recipeSelect");
 
     recipeSelect.innerHTML = "";
+    matchedRecipes = [];
 
-    if (matches.length === 0) {
-      const option = document.createElement("option");
-      option.textContent = "No recipes found";
-      option.disabled = true;
-      option.selected = true;
-      recipeSelect.appendChild(option);
-      recipeSelect.selectedIndex = 0;
-      return;
+    recipes.forEach(recipe => {
+        const ing = recipe.ingredients || {};
+
+        const p = (ing.protein || []).map(x => x.toLowerCase());
+        const s = (ing.starch || []).map(x => x.toLowerCase());
+        const v = (ing.vegetables || []).map(x => x.toLowerCase());
+
+        const match =
+            (pVal === "" || p.some(x => x.includes(pVal))) &&
+            (sVal === "" || s.some(x => x.includes(sVal))) &&
+            (vVal === "" || v.some(x => x.includes(vVal)));
+
+        if (match) matchedRecipes.push(recipe);
+    });
+
+    if (matchedRecipes.length === 0) {
+        const opt = document.createElement("option");
+        opt.textContent = "No matching recipes";
+        opt.disabled = true;
+        recipeSelect.appendChild(opt);
+        clearRecipeCard();
+        return;
     }
 
-    matches.forEach((recipe, index) => {
-      const option = document.createElement("option");
-      option.value = recipe.recipe;
-      option.textContent = recipe.recipe;
+    matchedRecipes.forEach((r, i) => {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = r.recipe;
+        recipeSelect.appendChild(opt);
+    });
+}
 
-      // Explicitly select first item (MOBILE FIX)
-      if (index === 0) {
-        option.selected = true;
-      }
+/* ===============================
+   Display Recipe
+================================ */
+function showRecipeDetails() {
+    const index = document.getElementById("recipeSelect").value;
+    if (!matchedRecipes[index]) return;
 
-      recipeSelect.appendChild(option);
+    const r = matchedRecipes[index];
+
+    document.getElementById("recipeName").textContent = r.recipe;
+
+    const list = document.getElementById("ingredientList");
+    list.innerHTML = "";
+    Object.values(r.ingredients).flat().forEach(i => {
+        const li = document.createElement("li");
+        li.textContent = i;
+        list.appendChild(li);
     });
 
-    // Force selection for mobile browsers
-    recipeSelect.selectedIndex = 0;
+    document.getElementById("instructions").value = r.instructions;
 
-    // Trigger change event so the first recipe's details display automatically
-    recipeSelect.dispatchEvent(new Event("change"));
-  }
+    const img = document.getElementById("recipeImage");
+    img.src = r.image || "images/placeholder.jpg";
+}
 
+/* ===============================
+   Reset
+================================ */
+function resetResults() {
+    document.getElementById("protein").value = "";
+    document.getElementById("starch").value = "";
+    document.getElementById("vegetable").value = "";
 
-  /* ===============================
-     Display Selected Recipe
-  ============================== */
+    document.getElementById("recipeSelect").innerHTML = "";
+    clearRecipeCard();
+    matchedRecipes = [];
+}
 
-  recipeSelect.addEventListener("change", function () {
+function clearRecipeCard() {
+    document.getElementById("recipeName").textContent = "";
+    document.getElementById("ingredientList").innerHTML = "";
+    document.getElementById("instructions").value = "";
+    document.getElementById("recipeImage").src = "images/placeholder.jpg";
+}
 
-    const selectedRecipe = recipes.find(
-      recipe => recipe.recipe === recipeSelect.value
-    );
+/* ===============================
+   Init
+================================ */
+function init() {
+    populateDropdowns();
 
-    if (!selectedRecipe) return;
+    document.getElementById("btnSearch")
+        .addEventListener("click", getRecipeData);
 
-    recipeName.textContent = selectedRecipe.recipe;
+    document.getElementById("recipeSelect")
+        .addEventListener("change", showRecipeDetails);
 
-    // Accessibility improvement
-    recipeName.setAttribute("tabindex", "-1");
-    recipeName.focus();
+    document.getElementById("btnReset")
+        .addEventListener("click", resetResults);
+}
 
-    recipeImage.src = selectedRecipe.image;
-    recipeImage.alt = selectedRecipe.recipe + " image";
-
-    ingredientList.innerHTML = "";
-    Object.values(selectedRecipe.ingredients).flat().forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      ingredientList.appendChild(li);
-    });
-
-    instructions.value = selectedRecipe.instructions;
-  });
-
-
-  /* ===============================
-     Reset
-  ============================== */
-
-  btnReset.addEventListener("click", function () {
-
-    proteinSelect.selectedIndex = 0;
-    starchSelect.selectedIndex = 0;
-    vegetableSelect.selectedIndex = 0;
-
-    recipeSelect.innerHTML =
-      '<option value="" disabled selected>Select a matching recipe</option>';
-
-    recipeName.textContent = "";
-    recipeImage.src = "images/placeholder.jpg";
-    recipeImage.alt = "Recipe image";
-
-    ingredientList.innerHTML = "";
-    instructions.value = "";
-  });
-
-
-  /* ===============================
-     Init
-  ============================== */
-
-  populateFilters();
-
-});
+window.addEventListener("load", init);
