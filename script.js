@@ -1,156 +1,214 @@
 // Recipe Generator Script
 // Anthony Mercer-Bey
 
-let matchedRecipes = [];
+document.addEventListener("DOMContentLoaded", function () {
 
-/* ===============================
-   Populate Dropdowns
-================================ */
-function populateDropdowns() {
-    const recipes = JSON.parse(data);
+  const recipes = JSON.parse(data);
 
-    const proteinSelect = document.getElementById("protein");
-    const starchSelect = document.getElementById("starch");
-    const vegetableSelect = document.getElementById("vegetable");
+  const proteinSelect = document.getElementById("protein");
+  const starchSelect = document.getElementById("starch");
+  const vegetableSelect = document.getElementById("vegetable");
+  const cuisineSelect = document.getElementById("cuisine");
+  const recipeSelect = document.getElementById("recipeSelect");
 
+  const recipeName = document.getElementById("recipeName");
+  const recipeImage = document.getElementById("recipeImage");
+  const ingredientList = document.getElementById("ingredientList");
+  const instructions = document.getElementById("instructions");
+
+  const btnSearch = document.getElementById("btnSearch");
+  const btnReset = document.getElementById("btnReset");
+  const btnPrint = document.getElementById("btnPrint");
+
+
+  /* ===============================
+     Populate Filter Dropdowns
+  ============================== */
+
+  function populateFilters() {
     const proteins = new Set();
     const starches = new Set();
     const vegetables = new Set();
+    const cuisines = new Set();
 
-    recipes.forEach(r => {
-        const ing = r.ingredients || {};
-        (ing.protein || []).forEach(p => proteins.add(p));
-        (ing.starch || []).forEach(s => starches.add(s));
-        (ing.vegetables || []).forEach(v => vegetables.add(v));
+    recipes.forEach(function (recipe) {
+      recipe.protein.forEach(function (p) { proteins.add(p); });
+      recipe.starch.forEach(function (s) { starches.add(s); });
+      recipe.vegetables.forEach(function (v) { vegetables.add(v); });
+
+      if (Array.isArray(recipe.cuisine)) {
+        recipe.cuisine.forEach(function (c) { cuisines.add(c); });
+      }
     });
 
     populateSelect(proteinSelect, proteins);
     populateSelect(starchSelect, starches);
     populateSelect(vegetableSelect, vegetables);
-}
+    populateSelect(cuisineSelect, cuisines);
+  }
 
-function populateSelect(select, values) {
-    select.innerHTML = "";
+  function populateSelect(selectElement, values) {
+    selectElement.innerHTML = '<option value="All" selected>All</option>';
 
-    const any = document.createElement("option");
-    any.value = "";
-    any.textContent = "-- Any --";
-    select.appendChild(any);
-
-    Array.from(values).sort().forEach(v => {
-        const opt = document.createElement("option");
-        opt.value = v.toLowerCase();
-        opt.textContent = v;
-        select.appendChild(opt);
+    values.forEach(function (value) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      selectElement.appendChild(option);
     });
-}
+  }
 
-/* ===============================
-   Search Recipes
-================================ */
-function getRecipeData() {
-    const recipes = JSON.parse(data);
 
-    const pVal = document.getElementById("protein").value;
-    const sVal = document.getElementById("starch").value;
-    const vVal = document.getElementById("vegetable").value;
+  /* ===============================
+     Generate Matching Recipes
+  ============================== */
 
-    const recipeSelect = document.getElementById("recipeSelect");
+  btnSearch.addEventListener("click", function () {
+
+    const selectedProtein = proteinSelect.value;
+    const selectedStarch = starchSelect.value;
+    const selectedVegetable = vegetableSelect.value;
+    const selectedCuisine = cuisineSelect.value;
+
+    const matches = recipes.filter(function (recipe) {
+
+      const proteinMatch =
+        selectedProtein === "All" || recipe.protein.includes(selectedProtein);
+
+      const starchMatch =
+        selectedStarch === "All" || recipe.starch.includes(selectedStarch);
+
+      const vegetableMatch =
+        selectedVegetable === "All" || recipe.vegetables.includes(selectedVegetable);
+
+      const cuisineMatch =
+        selectedCuisine === "All" || recipe.cuisine.includes(selectedCuisine);
+
+      return proteinMatch && starchMatch && vegetableMatch && cuisineMatch;
+    });
+
+    populateMatchingRecipes(matches);
+  });
+
+
+  /* ===============================
+     Populate Matching Recipes
+  ============================== */
+
+  function populateMatchingRecipes(matches) {
 
     recipeSelect.innerHTML = "";
-    matchedRecipes = [];
 
-    recipes.forEach(recipe => {
-        const ing = recipe.ingredients || {};
+    if (matches.length === 0) {
+      const option = document.createElement("option");
+      option.textContent = "No recipes found";
+      option.disabled = true;
+      option.selected = true;
+      recipeSelect.appendChild(option);
 
-        const p = (ing.protein || []).map(x => x.toLowerCase());
-        const s = (ing.starch || []).map(x => x.toLowerCase());
-        const v = (ing.vegetables || []).map(x => x.toLowerCase());
-
-        const match =
-            (pVal === "" || p.some(x => x.includes(pVal))) &&
-            (sVal === "" || s.some(x => x.includes(sVal))) &&
-            (vVal === "" || v.some(x => x.includes(vVal)));
-
-        if (match) matchedRecipes.push(recipe);
-    });
-
-    if (matchedRecipes.length === 0) {
-        const opt = document.createElement("option");
-        opt.textContent = "No matching recipes";
-        opt.disabled = true;
-        recipeSelect.appendChild(opt);
-        clearRecipeCard();
-        return;
+      recipeName.textContent = "- Recipe -";
+      recipeImage.src = "images/placeholder.jpg";
+      ingredientList.innerHTML = "";
+      instructions.value = "";
+      return;
     }
 
-    matchedRecipes.forEach((r, i) => {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = r.recipe;
-        recipeSelect.appendChild(opt);
-    });
-}
+    matches.forEach(function (recipe, index) {
+      const option = document.createElement("option");
+      option.value = recipe.recipe;
+      option.textContent = recipe.recipe;
 
-/* ===============================
-   Display Recipe
-================================ */
-function showRecipeDetails() {
-    const index = document.getElementById("recipeSelect").value;
-    if (!matchedRecipes[index]) return;
+      if (index === 0) {
+        option.selected = true;
+      }
 
-    const r = matchedRecipes[index];
-
-    document.getElementById("recipeName").textContent = r.recipe;
-
-    const list = document.getElementById("ingredientList");
-    list.innerHTML = "";
-    Object.values(r.ingredients).flat().forEach(i => {
-        const li = document.createElement("li");
-        li.textContent = i;
-        list.appendChild(li);
+      recipeSelect.appendChild(option);
     });
 
-    document.getElementById("instructions").value = r.instructions;
+    recipeSelect.selectedIndex = 0;
 
-    const img = document.getElementById("recipeImage");
-    img.src = r.image || "images/placeholder.jpg";
-}
+    // ✅ NEW: Automatically load the first recipe
+    displayRecipeByName(recipeSelect.value);
+  }
 
-/* ===============================
-   Reset
-================================ */
-function resetResults() {
-    document.getElementById("protein").value = "";
-    document.getElementById("starch").value = "";
-    document.getElementById("vegetable").value = "";
 
-    document.getElementById("recipeSelect").innerHTML = "";
-    clearRecipeCard();
-    matchedRecipes = [];
-}
+  /* ===============================
+     Display Selected Recipe
+  ============================== */
 
-function clearRecipeCard() {
-    document.getElementById("recipeName").textContent = "";
-    document.getElementById("ingredientList").innerHTML = "";
-    document.getElementById("instructions").value = "";
-    document.getElementById("recipeImage").src = "images/placeholder.jpg";
-}
+  function displayRecipeByName(recipeNameValue) {
 
-/* ===============================
-   Init
-================================ */
-function init() {
-    populateDropdowns();
+    const selectedRecipe = recipes.find(function (recipe) {
+      return recipe.recipe === recipeNameValue;
+    });
 
-    document.getElementById("btnSearch")
-        .addEventListener("click", getRecipeData);
+    if (!selectedRecipe) return;
 
-    document.getElementById("recipeSelect")
-        .addEventListener("change", showRecipeDetails);
+    recipeName.textContent = selectedRecipe.recipe;
 
-    document.getElementById("btnReset")
-        .addEventListener("click", resetResults);
-}
+    recipeName.setAttribute("tabindex", "-1");
+    recipeName.focus();
 
-window.addEventListener("load", init);
+    recipeImage.src = selectedRecipe.image;
+    recipeImage.alt = selectedRecipe.recipe + " image";
+
+    ingredientList.innerHTML = "";
+    Object.values(selectedRecipe.ingredients).flat().forEach(function (item) {
+      const li = document.createElement("li");
+      li.textContent = item;
+      ingredientList.appendChild(li);
+    });
+
+    instructions.value = selectedRecipe.instructions;
+  }
+
+  recipeSelect.addEventListener("change", function () {
+    displayRecipeByName(recipeSelect.value);
+  });
+
+
+  /* ===============================
+     Print
+  ============================== */
+
+  btnPrint.addEventListener("click", function () {
+
+    if (recipeName.textContent === "- Recipe -") {
+      alert("Please select a recipe first.");
+      return;
+    }
+
+    window.print();
+  });
+
+
+  /* ===============================
+     Reset
+  ============================== */
+
+  btnReset.addEventListener("click", function () {
+
+    proteinSelect.value = "All";
+    starchSelect.value = "All";
+    vegetableSelect.value = "All";
+    cuisineSelect.value = "All";
+
+    recipeSelect.innerHTML =
+      '<option value="" disabled selected>Select a matching recipe</option>';
+
+    recipeName.textContent = "- Recipe -";
+    recipeImage.src = "images/placeholder.jpg";
+    recipeImage.alt = "Recipe image";
+
+    ingredientList.innerHTML = "";
+    instructions.value = "";
+  });
+
+
+  /* ===============================
+     Init
+  ============================== */
+
+  populateFilters();
+
+});

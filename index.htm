@@ -17,7 +17,7 @@
     <h1 class="visually-hidden">Recipe Generator</h1>
 	<header class="app-header"><img src="images/banner.png" alt="Recipe Generator" class="app-banner"></header>
 	
-	<div class="intro-text">Input Your Ingredients:</div>
+	<div class="intro-text">Input Your Ingredients Or Select a Cuisine:</div>
 
     <!-- Filters -->
     <div class="filter-grid">
@@ -31,9 +31,9 @@
         <select id="vegetable"></select>
 		<select id="cuisine"></select>
     </div>
-
+	<div>
     <button id="btnSearch">Generate Recipe</button>
-
+	</div>
     <!-- Results -->
     <div class="output-section">
         <div class="section-banner">
@@ -46,7 +46,7 @@
    <div class="recipe-card">
 
   <div class="recipe-header">
-    <h2 id="recipeName"></h2>
+    <h2 id="recipeName">- Recipe -</h2>
   </div>
 
   <div class="recipe-body">
@@ -62,6 +62,8 @@
 		<img src="images/instructions.png" alt="Instructions">
       </div>
       <textarea id="instructions" readonly></textarea>
+      
+      <button id="btnPrint" type="button" class="print-btn">Print Recipe</button>
     </div>
   </div>
 

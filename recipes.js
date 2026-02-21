@@ -4,7 +4,7 @@ var data = '[\
     "protein": ["Chicken"],\
     "starch": ["Rice"],\
     "vegetables": ["Broccoli", "Carrots"],\
-    "cuisine": "American",\
+    "cuisine": ["American"],\
     "ingredients": {\
       "protein": ["Chicken"],\
       "starch": ["Rice"],\
@@ -18,7 +18,7 @@ var data = '[\
     "protein": ["Salmon"],\
     "starch": ["Quinoa"],\
     "vegetables": ["Asparagus", "Spinach"],\
-    "cuisine": "American",\
+    "cuisine": ["American"],\
     "ingredients": {\
       "protein": ["Salmon"],\
       "starch": ["Quinoa"],\
@@ -31,7 +31,7 @@ var data = '[\
     "recipe": "Beef Stir Fry",\
     "protein": ["Beef"],\
     "starch": ["Rice"],\
-    "cuisine": "Asian",\
+    "cuisine": ["Asian"],\
     "vegetables": ["Bell Peppers", "Snap Peas"],\
     "ingredients": {\
       "protein": ["Beef"],\
@@ -46,7 +46,7 @@ var data = '[\
     "protein": ["Ground Turkey"],\
     "starch": ["Sweet Potatoes"],\
     "vegetables": ["Zucchini", "Onions"],\
-    "cuisine": "American",\
+    "cuisine": ["American"],\
     "ingredients": {\
       "protein": ["Ground Turkey"],\
       "starch": ["Sweet Potatoes"],\
@@ -60,7 +60,7 @@ var data = '[\
     "protein": ["Tofu"],\
     "starch": ["Soba Noodles"],\
     "vegetables": ["Mushrooms", "Bok Choy"],\
-    "cuisine": "Asian",\
+    "cuisine": ["Asian"],\
     "ingredients": {\
       "protein": ["Tofu"],\
       "starch": ["Soba Noodles"],\
@@ -74,7 +74,7 @@ var data = '[\
     "protein": ["Shrimp"],\
     "starch": ["Pasta"],\
     "vegetables": ["Spinach", "Tomatoes"],\
-    "cuisine": "Italian",\
+    "cuisine": ["Italian"],\
     "ingredients": {\
       "protein": ["Shrimp"],\
       "starch": ["Pasta"],\
@@ -88,7 +88,7 @@ var data = '[\
     "protein": ["Chicken"],\
     "starch": ["Rice"],\
     "vegetables": ["Bell Peppers", "Onions"],\
-    "cuisine": "Mexican",\
+    "cuisine": ["Mexican"],\
     "ingredients": {\
       "protein": ["Chicken"],\
       "starch": ["Rice"],\
@@ -102,7 +102,7 @@ var data = '[\
     "protein": ["Pork"],\
     "starch": ["Rice"],\
     "vegetables": ["Peas", "Carrots"],\
-    "cuisine": "Asian",\
+    "cuisine": ["Asian"],\
     "ingredients": {\
       "protein": ["Pork"],\
       "starch": ["Rice"],\
@@ -116,7 +116,7 @@ var data = '[\
     "protein": ["Lentils"],\
     "starch": ["Potatoes"],\
     "vegetables": ["Carrots", "Celery"],\
-    "cuisine": "Vegan",\
+    "cuisine": ["Vegan"],\
     "ingredients": {\
       "protein": ["Lentils"],\
       "starch": ["Potatoes"],\
@@ -130,7 +130,7 @@ var data = '[\
     "protein": ["Chicken"],\
     "starch": ["Couscous"],\
     "vegetables": ["Zucchini", "Onions"],\
-    "cuisine": "Mediterranean",\
+    "cuisine": ["Mediterranean"],\
     "ingredients": {\
       "protein": ["Chicken"],\
       "starch": ["Couscous"],\
@@ -144,7 +144,7 @@ var data = '[\
     "protein": ["Beef"],\
     "starch": ["Potatoes"],\
     "vegetables": ["Onions", "Bell Peppers"],\
-    "cuisine": "American",\
+    "cuisine": ["American"],\
     "ingredients": {\
       "protein": ["Beef"],\
       "starch": ["Potatoes"],\
@@ -158,7 +158,7 @@ var data = '[\
     "protein": ["Salmon"],\
     "starch": ["Rice"],\
     "vegetables": ["Spinach", "Tomatoes"],\
-    "cuisine": "Italian",\
+    "cuisine": ["Italian"],\
     "ingredients": {\
       "protein": ["Salmon"],\
       "starch": ["Rice"],\
@@ -172,7 +172,7 @@ var data = '[\
     "protein": ["Ground Turkey"],\
     "starch": ["Quinoa"],\
     "vegetables": ["Broccoli", "Carrots"],\
-    "cuisine": "Asian",\
+    "cuisine": ["Asian"],\
     "ingredients": {\
       "protein": ["Ground Turkey"],\
       "starch": ["Quinoa"],\
@@ -186,7 +186,7 @@ var data = '[\
     "protein": ["Chickpeas"],\
     "starch": ["Rice"],\
     "vegetables": ["Zucchini", "Peppers"],\
-    "cuisine": "Vegan",\
+    "cuisine": ["Vegan"],\
     "ingredients": {\
       "protein": ["Chickpeas"],\
       "starch": ["Rice"],\
@@ -200,7 +200,7 @@ var data = '[\
     "protein": ["Shrimp"],\
     "starch": ["Potatoes"],\
     "vegetables": ["Green Beans", "Onions"],\
-    "cuisine": "American",\
+    "cuisine": ["American"],\
     "ingredients": {\
       "protein": ["Shrimp"],\
       "starch": ["Potatoes"],\
@@ -214,7 +214,7 @@ var data = '[\
     "protein": ["Pork"],\
     "starch": ["Noodles"],\
     "vegetables": ["Cabbage", "Carrots"],\
-    "cuisine": "Asian",\
+    "cuisine": ["Asian"],\
     "ingredients": {\
       "protein": ["Pork"],\
       "starch": ["Noodles"],\
@@ -242,7 +242,7 @@ var data = '[\
     "protein": ["Tofu"],\
     "starch": ["Rice"],\
     "vegetables": ["Broccoli", "Mushrooms"],\
-    "cuisine": "Vegan",\
+    "cuisine": ["Vegan"],\
     "ingredients": {\
       "protein": ["Tofu"],\
       "starch": ["Rice"],\
@@ -256,7 +256,7 @@ var data = '[\
     "protein": ["Steak"],\
     "starch": ["Potatoes"],\
     "vegetables": ["Green Beans"],\
-    "cuisine": "American",\
+    "cuisine": ["American"],\
     "ingredients": {\
       "protein": ["Steak"],\
       "starch": ["Potatoes"],\
