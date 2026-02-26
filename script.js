@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
     recipeName.setAttribute("tabindex", "-1");
     recipeName.focus();
 
+    recipeImage.onerror = function () { this.src = "images/placeholder.jpg"; };
     recipeImage.src = selectedRecipe.image;
     recipeImage.alt = selectedRecipe.recipe + " image";
 
