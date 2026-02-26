@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     instructions.value = selectedRecipe.instructions;
+    btnPrint.disabled = false;
   }
 
   recipeSelect.addEventListener("change", function () {
@@ -202,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ingredientList.innerHTML = "";
     instructions.value = "";
+    btnPrint.disabled = true;
   });
 
 
